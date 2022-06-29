@@ -13,21 +13,23 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  runs-on: ubuntu-latest
+  build:
 
-  steps:
-  - uses: actions/checkout@v3
+    runs-on: ubuntu-latest
 
-  - name: ssh key generate
-    run: |
-      mkdir -p ~/.ssh
-      echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      chmod 600 ~/.ssh/id_rsa
+    steps:
+    - uses: actions/checkout@v3
 
-  - name: koko doko ...?
-    run: |
-      echo $PWD
-      ls -a .
+    - name: ssh key generate
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
-  - name: sync blog posts
-    run: rsync -ahvz -e "ssh -i ~/.ssh/id_rsa -p ${{ secrets.SSH_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/arvhives_md --include-from=".github/rsync_include.txt" --exclude-from=".github/rsync_exclude.txt"
+    - name: koko doko ...?
+      run: |
+        echo $PWD
+        ls -a .
+
+    - name: sync blog posts
+      run: rsync -ahvz -e "ssh -i ~/.ssh/id_rsa -p ${{ secrets.SSH_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/arvhives_md --include-from=".github/rsync_include.txt" --exclude-from=".github/rsync_exclude.txt"
