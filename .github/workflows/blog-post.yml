@@ -22,8 +22,8 @@ jobs:
     - name: sync blog posts
       uses: burnett01/rsync-deployments@5.2
       with:
-        switches: -ahvz --include-from=".github/rsync_include.txt" --exclude-from=".github/rsync_exclude.txt"
-        path: .
+        switches: -avzr
+        path: archive/
         remote_path: /home/${{ secrets.SSH_USERNAME }}/temp
         remote_host: ${{ secrets.SSH_HOST }}
         remote_port: ${{ secrets.SSH_PORT }}
