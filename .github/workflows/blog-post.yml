@@ -25,11 +25,5 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-    - name: koko doko ...?
-      run: |
-        echo $PWD
-        ls -a .
-        ls -a .github
-
     - name: sync blog posts
       run: rsync -ahvz -e "ssh -i ~/.ssh/id_rsa -p ${{ secrets.SSH_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/arvhives_md --include-from=".github/rsync_include.txt" --exclude-from=".github/rsync_exclude.txt"
