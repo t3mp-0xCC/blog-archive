@@ -25,9 +25,9 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         name: id_rsa
         known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+    - name: known_hosts_test
+      run: cat .ssh/known_hosts
 
     - name: sync blog posts
       run: rsync -ahvz -e "ssh -p ${{ secrets.SSH_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/temp --include-from=".github/rsync_include.txt" --exclude-from=".github/rsync_exclude.txt"
 
-    - name: known_hosts_test
-      run: cat .ssh/known_hosts
